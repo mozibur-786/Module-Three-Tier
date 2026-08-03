@@ -13,6 +13,6 @@
               dnf install mariadb105-server -y
               EOF
   tags = {
-    Name = "sam-backend-public"
+    Name = "rohit-backend-public"
   }
   }

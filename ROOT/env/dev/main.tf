@@ -2,7 +2,7 @@ module "vpc" {
   source   = "../../modules/infrastructure"
 aws_region = "us-east-1"
 vpc_cidr = "10.0.0.0/16"
-vpc_name = "sam-vpc"
+vpc_name = "rohit-vpc"
 public_subnet_1_cidr = "10.0.1.0/24"
 public_subnet_2_cidr = "10.0.2.0/24"
 private_subnet_1_cidr = "10.0.3.0/24"
@@ -50,7 +50,7 @@ target_group_name = "frontend-tg"
 }
 
 module "backend_alb" {
-source = "../../modules/backend/loadbalncerbackend"
+source = "../../modules/backend/loadbalancerbackend"
 aws_region = "us-east-1"
 vpc_id = module.vpc.vpc_id
 subnets = module.vpc.public_subnets
@@ -62,8 +62,8 @@ target_group_name = "backend-tg"
 module "rds" {
 source         = "../../modules/database"
 aws_region   = "us-east-1"
-project_name = "sam-three-tier"
-identifier   = "sam-book-rds"
+project_name = "rohit-three-tier"
+identifier   = "rohit-book-rds"
 allocated_storage = 20
 engine            = "mysql"
 engine_version    = "8.0"
@@ -71,7 +71,7 @@ instance_class    = "db.t3.micro"
 multi_az          = false
 db_name           = "bookdb"
 db_username       = "admin"
-db_password       = "sam12345"      
+db_password       = "rohit12345"      
 db_subnet_1_id    = module.vpc.private_db_subnets[0]
 db_subnet_2_id    = module.vpc.private_db_subnets[1]
 rds_sg_id         = module.vpc.database_sg_id
@@ -82,7 +82,7 @@ module "frontend_launchtemplate" {
 
 source        = "../../modules/frontend/launchtemplate"
 aws_region   = "us-east-1"
-project_name   = "sam-three-tier"
+project_name   = "rohit-three-tier"
 instance_type  = "t3.micro"
 frontend_sg_id = module.vpc.frontend_server_sg_id
 key_name       = "us-east-1"
@@ -94,7 +94,7 @@ module "backend_launchtemplate" {
 
 source        = "../../modules/backend/launchtemplate"
 aws_region   = "us-east-1"
-project_name   = "sam-three-tier"
+project_name   = "rohit-three-tier"
 instance_type  = "t3.micro"
 backend_sg_id  = module.vpc.backend_server_sg_id
 key_name       = "us-east-1"
@@ -105,7 +105,7 @@ instanceid = module.backend-ec2.instanceid
 module "asg-backend" {
 source     = "../../modules/backend/asg"
 aws_region = "us-east-1"
-project_name = "sam-three-tier"
+project_name = "rohit-three-tier"
 backend_launch_template_id = module.backend_launchtemplate.backend_launch_template_id
 app_subnet_1_id            = module.vpc.private_app_subnets[0]
 app_subnet_2_id            = module.vpc.private_app_subnets[1]
@@ -131,7 +131,7 @@ security_group_id = module.vpc.bastion_sg_id
 module "asg-frontend" {
 source     = "../../modules/frontend/asg"
 aws_region = "us-east-1"
-project_name = "sam-three-tier"
+project_name = "rohit-three-tier"
 
 # Frontend
 frontend_launch_template_id = module.frontend_launchtemplate.frontend_launch_template_id

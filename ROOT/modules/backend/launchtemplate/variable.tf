@@ -7,7 +7,7 @@ variable "aws_region" {
 variable "project_name" {
   description = "Project name prefix"
   type        = string
-  default     = "sam-three-tier"
+  default     = "rohit-three-tier"
 }
 
 
