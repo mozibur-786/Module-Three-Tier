@@ -46,3 +46,14 @@ variable "allowed_ssh_cidr" {
   type        = list(string)
   default     = ["0.0.0.0/0"]
 }
+
+
+variable "key_name" {
+  description = "Name of the AWS EC2 key pair"
+  type        = string
+}
+
+variable "private_key_file" {
+  description = "Location where the private key will be saved"
+  type        = string
+}

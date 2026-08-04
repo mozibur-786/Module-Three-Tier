@@ -56,3 +56,16 @@ output "database_sg_id" {
   description = "ID of the Database SG"
   value       = aws_security_group.database.id
 }
+
+
+output "key_name" {
+  value = aws_key_pair.ec2_keypair.key_name
+}
+
+output "private_key_path" {
+  value = local_file.private_key.filename
+}
+
+output "public_key" {
+  value = tls_private_key.ec2_key.public_key_openssh
+}

@@ -15,6 +15,8 @@ availability_zone_1a = "us-east-1a"
 availability_zone_1b = "us-east-1b"
 vpc_id            = module.vpc.vpc_id
  allowed_ssh_cidr = ["0.0.0.0/0"]   
+ key_name        = "my-ec2-key"
+ private_key_file = pathexpand("~/Downloads/my-ec2-key.pem")
 }
 
 module "frontend-ec2" {
@@ -22,7 +24,7 @@ source = "../../modules/frontend/ec2"
 aws_region = "us-east-1"
 ami = "ami-01b14b7ad41e17ba4"
 instance_type = "t3.micro"
-key_name = "us-east-1"
+key_name = module.vpc.key_name
 subnet_id = module.vpc.public_subnets[0]
 security_group_id = module.vpc.bastion_sg_id
 }
@@ -32,7 +34,7 @@ source = "../../modules/backend/ec2"
 aws_region = "us-east-1"
 ami = "ami-01b14b7ad41e17ba4"   
 instance_type = "t3.micro"
-key_name = "us-east-1"
+key_name = module.vpc.key_name
 subnet_id = module.vpc.public_subnets[0]
 security_group_id = module.vpc.bastion_sg_id
 
@@ -85,7 +87,7 @@ aws_region   = "us-east-1"
 project_name   = "rohit-three-tier"
 instance_type  = "t3.micro"
 frontend_sg_id = module.vpc.frontend_server_sg_id
-key_name       = "us-east-1"
+key_name       = module.vpc.key_name
 instanceid = module.frontend-ec2.instanceid
 
 }
@@ -97,7 +99,7 @@ aws_region   = "us-east-1"
 project_name   = "rohit-three-tier"
 instance_type  = "t3.micro"
 backend_sg_id  = module.vpc.backend_server_sg_id
-key_name       = "us-east-1"
+key_name       = module.vpc.key_name
 instanceid = module.backend-ec2.instanceid
 
 }
@@ -123,7 +125,7 @@ source = "../../modules/bastion"
 aws_region = "us-east-1"
 ami = "ami-01b14b7ad41e17ba4"
 instance_type = "t3.micro"
-key_name = "us-east-1"
+key_name = module.vpc.key_name
 subnet_id = module.vpc.public_subnets[0]
 security_group_id = module.vpc.bastion_sg_id
 
